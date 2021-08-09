@@ -84,7 +84,8 @@ render();
 
 imageSection.addEventListener('click', whenclick);
 function whenclick(event){
-
+let array1 = [leftRandom,rightRandom,centerRandom];
+let array2 = [];
   if((event.target.id === 'imgone' || event.target.id === 'imgtwo' || event.target.id === 'imgthree') && counter < numberOfRound) {
     if (event.target.id === 'imgone')
     { Mall.all[leftRandom].click++;
@@ -94,10 +95,13 @@ function whenclick(event){
     { Mall.all[centerRandom].click++;
     }
 
-
-
     render();
     counter++;
+do{
+  render();
+  array2 = [leftRandom,rightRandom,centerRandom];
+}while(checkimg(array1,array2));
+
   }
   else {
     imageSection.removeEventListener('click', whenclick);
@@ -121,6 +125,17 @@ function clickbutton (){
     ulE.appendChild(liE);
 
   }
+}
+
+function checkimg(list1,list2){
+  for (let i = 0; i < list1.length; i++ ){
+    for (let x = 0; x < list2.length; x++){
+      if (list1[i] === list2[x]){
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 
@@ -190,7 +205,6 @@ function drawchart(){
         }
       }
     }
-  });
+  }
+  );
 }
-
-function 
