@@ -30,25 +30,25 @@ let imgname = [];
 let imgviwes = [];
 let imgclicks = [];
 
+
 const imageSection = document.getElementById('imageSection');
 let imgone = document.getElementById( 'imgone' );
 let imgtwo = document.getElementById( 'imgtwo' );
 let imgthree = document.getElementById( 'imgthree' );
 
 
-function Mall( name, imageSrc ) {
+function Mall( name, image ,shown=0 , click=0) {
   this.name = name;
-  this.image = imageSrc;
-  this.shown = 0;
-  this.click = 0;
+  this.image = image;
+  this.shown = shown;
+  this.click = click;
   Mall.all.push( this );
 }
 
 Mall.all = [];
+getData();
 
-for( let i = 0; i < imgArray.length; i++ ) {
-  new Mall( imgArray[i].split( '.' )[0], imgArray[i] );
-}
+
 
 console.log( Mall.all );
 
@@ -77,15 +77,15 @@ function render() {
   Mall.all[rightRandom].shown++;
   Mall.all[centerRandom].shown++;
 
-
+  localStorage.data = JSON.stringify(Mall.all);
 }
 
 render();
 
 imageSection.addEventListener('click', whenclick);
 function whenclick(event){
-let array1 = [leftRandom,rightRandom,centerRandom];
-let array2 = [];
+  let array1 = [leftRandom,rightRandom,centerRandom];
+  let array2 = [];
   if((event.target.id === 'imgone' || event.target.id === 'imgtwo' || event.target.id === 'imgthree') && counter < numberOfRound) {
     if (event.target.id === 'imgone')
     { Mall.all[leftRandom].click++;
@@ -97,10 +97,10 @@ let array2 = [];
 
     render();
     counter++;
-do{
-  render();
-  array2 = [leftRandom,rightRandom,centerRandom];
-}while(checkimg(array1,array2));
+    do{
+      render();
+      array2 = [leftRandom,rightRandom,centerRandom];
+    }while(!checkimg(array1,array2));
 
   }
   else {
@@ -207,4 +207,20 @@ function drawchart(){
     }
   }
   );
+}
+
+
+
+
+function getData() {
+  if( localStorage.data ) {
+    let data = JSON.parse( localStorage.data );
+    for( let i = 0; i < data.length; i++ ) {
+      new Mall( data[i].name, data[i].image, data[i].shown,data[i].click );
+    }
+  } else {
+    for( let i = 0; i < imgArray.length; i++ ) {
+      new Mall( imgArray[i].split( '.' )[0], imgArray[i] );
+    }
+  }
 }
